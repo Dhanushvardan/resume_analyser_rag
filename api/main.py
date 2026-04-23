@@ -4,10 +4,12 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 import pdfplumber
 from openai import OpenAI
-from langgraph.graph import state, StateGraph
+from typing import TypedDict
+from langgraph.graph import  StateGraph
 from langchain_core.documents import Document
-from langchain_huggingface import HuggingFaceEmbeddings
+# from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_community.vectorstores import FAISS
+from langchain_community.embeddings import HuggingFaceEmbeddings
 
 
 
@@ -20,10 +22,17 @@ llm = OpenAI(
 class t(BaseModel):
     qs : str
 
-class state(dict):
-    pass
+# class state(dict):
+#     pass
 
-
+class state(TypedDict):
+    question: str
+    txt: str
+    context: str
+    answer: str
+    inpp:str
+    ct:str
+    oppp:str
 
 text = ""
 inp = ""
@@ -35,22 +44,22 @@ def ragNode(state):
     docs = [Document(page_content=state["txt"], metadata={"id": 1})]
     vectorstore = FAISS.from_documents(docs, embeddings)
     retriever = vectorstore.as_retriever()
-    dd = retriever.get_relevant_documents(state["in"])
+    dd = retriever.get_relevant_documents(state["inpp"])
     context = "\n".join([d.page_content for d in dd])
 
 
     
 
-    return {"in":state["in"],"ct":context}
+    return {"inpp":state["inpp"],"ct":context}
 
 
 def AnalyseNode(state):
 
-    res = llm.chat.completions.create(model="llama-3.3-70b-versatile",messages=[{"role":"user","content":state["in"] + "now answer for the context of the question" + state["ct"]}])
+    res = llm.chat.completions.create(model="llama-3.3-70b-versatile",messages=[{"role":"user","content":state["inpp"] + "now answer for the context of the question" + state["ct"]}])
 
     
 
-    return {res.choices[0].message.content}
+    return {"oppp":res.choices[0].message.content}
 
 
 
@@ -105,8 +114,8 @@ def getForm(file: UploadFile = File(...)):
 def getQs(req : t):
     inp = req.qs
 
-    res = app_graph.invoke({"in":inp, "txt":text})
+    res = app_graph.invoke({"inpp":inp, "txt":text})
 
-    return res
+    return res["oppp"]
 
 
