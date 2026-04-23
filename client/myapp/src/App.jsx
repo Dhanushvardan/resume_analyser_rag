@@ -35,24 +35,39 @@ function App() {
   };
   return (
     <div className="App">
-      <div className="header"></div>
-      <div className="body">
-        <h3>Hello, Pls upload your resume</h3>
-        <button onClick={triggerBG}>Check Backend</button>
-        <input
-          type="file"
-          onChange={(e) => {
-            setFm(e.target.files[0]);
-          }}
-        ></input>
-        <input
-          onChange={(e) => {
-            setInv(e.target.value);
-          }}
-        ></input>
-        <button onClick={sendAi}>Send to backend</button>
+      <div className="left">LANGGRAPH-RAG-AI based Resume Analyser</div>
+      <div className="right">
+        <div className="header">Upload your resume and Ask Qs</div>
+        <div className="body">
+          {/* <div className="chBut">
+            <button onClick={triggerBG}>Check Backend</button>
+          </div> */}
+          <div className="fileIn">
+            <input
+              type="file"
+              onChange={(e) => {
+                setFm(e.target.files[0]);
+              }}
+            ></input>
+          </div>
+          <div className="Innn">
+            <label>Enter your Question - </label>
+            <input
+              onChange={(e) => {
+                setInv(e.target.value);
+              }}
+            ></input>
+          </div>
+          <div className="end">
+            <button className="btt" onClick={sendAi}>
+              Send to backend
+            </button>
+          </div>
+        </div>
+        <div className="footer">
+          <label>{ot}</label>
+        </div>
       </div>
-      <div className="footer">{ot}</div>
     </div>
   );
 }
