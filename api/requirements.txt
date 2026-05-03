@@ -8,6 +8,7 @@ langgraph
 langchain
 langchain-core
 langchain-community
+langchain_huggingface
 faiss-cpu
 sentence-transformers
 python-dotenv
