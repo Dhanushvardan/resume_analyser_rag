@@ -10,11 +10,18 @@ from langchain_core.documents import Document
 # from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_community.vectorstores import FAISS
 from langchain_community.embeddings import HuggingFaceEmbeddings
+import os
+from dotenv import load_dotenv
+
+
+load_dotenv()
+
+
 
 
 
 llm = OpenAI(
-    
+    api_key = os.getenv("api_key"),
     base_url = "https://api.groq.com/openai/v1",
    
 )
